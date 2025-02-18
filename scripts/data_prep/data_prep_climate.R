@@ -21,7 +21,7 @@ pacman::p_load(
 )
 
 # Function for calculating climate variables
-source("/Users/kristindavis/Library/CloudStorage/OneDrive-NewMexicoStateUniversity/PhD/Code/R code/EASO/Data compilation/utils_func_calculate_climate_variables.R")
+source("scripts/utils_calculate_daymet_climate_variables.R")
 
 
 # Global variables ----
@@ -92,5 +92,7 @@ clim_calcs_comb <- plyr::join_all(list(tmin_breeding_avg, tmin_winter_avg, prcp_
 covs_climate <- clim_calcs_comb |>
   mutate(year = as.numeric(gsub("X", "" , year))) |>
   filter(year != max(year)) 
+
+# write.csv(covs_climate, paste0(root_dir, "processed/covs_climate.csv"), row.names = FALSE)
 
 # end script

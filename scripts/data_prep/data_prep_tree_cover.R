@@ -7,10 +7,10 @@
 # Output file for this script: processed/covs_tree.csv. That file isn't saved in this script because the covariate values aren't accurate (given that in this script they are generated for fake survey locations; see comment immediately above).
 
 ## Data downloads ----
-# Tree cover rasters from the Rangeland Analysis Platform () were downloaded on April 18, 2022. They were cropped to the extent of Fort Collins, CO in ArcGIS.
+# Tree cover rasters from the Rangeland Analysis Platform (https://rangelands.app/rap/?biomass_t=herbaceous&ll=39.0000,-98.0000&z=5) were downloaded on April 18, 2022. They were cropped to the extent of Fort Collins, CO in ArcGIS.
 
 
-# Package dependencies ----
+# Required packages ----
 # install.packages("pacman")
 pacman::p_load(
   tidyverse,
