@@ -3,8 +3,8 @@
 
 # Notes ----
 ## Anonymity of survey locations ----
-# The locations of the monitoring sites are not public, so the longitude and latitude coordinates in the sites.csv were randomly generated. Thus, the values in the output file created in this script will not align with the data values used in the manuscript, but the code will work, and the data with the real covariate values are available on Zenodo.
-# Output file for this script: processed/covs_tree.csv. That file isn't saved in this script because the covariate values aren't accurate (given that in this script they are generated for fake survey locations; see comment immediately above).
+# The locations of the monitoring sites are not public, so the longitude and latitude coordinates in the sites.csv were randomly generated. Thus, the values in the output file created in this script will not align with the data values used in the manuscript, but the code will work, and the data with the real covariate values have been included with the manuscript submission.
+# Output file for this script: data/processed/covs_tree.csv. That file isn't saved in this script because the covariate values aren't accurate (given that in this script they are generated for fake survey locations; see comment immediately above).
 
 ## Data downloads ----
 # Tree cover rasters from the Rangeland Analysis Platform (https://rangelands.app/rap/?biomass_t=herbaceous&ll=39.0000,-98.0000&z=5) were downloaded on April 18, 2022. They were cropped to the extent of Fort Collins, CO in ArcGIS.
@@ -21,20 +21,18 @@ pacman::p_load(
 
 
 # Global variables ----
-root_dir <- "/Users/kristindavis/Library/CloudStorage/OneDrive-NewMexicoStateUniversity/PhD/Data/EASO/publication_data/"
-# root_dir <- "/Users/kristindavis/Library/CloudStorage/OneDrive-NewMexicoStateUniversity/PhD/Data/EASO/publication_data/"
 buf_size <- 250  # for 250-m radii buffer used to calculate tree cover variables
 year_begin <- 2012 # for calculating a 'year' column after calculating the cohesion metric
 
 
 # Import data ----
 ## Transects ----
-sites <- read.csv(paste0(root_dir, "raw/sites.csv"), header = TRUE)
+sites <- read.csv("data/raw/sites.csv", header = TRUE)
 sites$ID <- as.numeric(as.factor(sites$Transect))
 sites_sp <- st_as_sf(sites, coords = c("longitude", "latitude"), crs = 4326)
 
 ## Tree cover ----
-tree_rasts <- terra::rast(paste0(root_dir, "raw/RAP_tree_cover_2013-2021.tif"))
+tree_rasts <- terra::rast(paste0(root_dir, "data/raw/RAP_tree_cover_2013-2021.tif"))
 plot(tree_rasts)
 
 ## Get unique values of tree cover, to check values are reasonable

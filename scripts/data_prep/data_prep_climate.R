@@ -25,14 +25,13 @@ source("scripts/utils_calculate_daymet_climate_variables.R")
 
 
 # Global variables ----
-root_dir <- "/Users/kristindavis/Library/CloudStorage/OneDrive-NewMexicoStateUniversity/PhD/Data/EASO/publication_data/"
 clim_vars <- c("prcp", "tmin")  # names of the focal climate variables in DAYMET
 year_vec <- c(2013:2022)  # focal years
 
 
 # Import data ----
 ## Transects ----
-sites <- read.csv(paste0(root_dir, "raw/sites.csv"), header = TRUE)
+sites <- read.csv(paste0(root_dir, "data/raw/sites.csv"), header = TRUE)
 sites_sp <- st_as_sf(sites, coords = c("longitude", "latitude"), crs = 4326)
 
 ## Climate ----
@@ -93,6 +92,6 @@ covs_climate <- clim_calcs_comb |>
   mutate(year = as.numeric(gsub("X", "" , year))) |>
   filter(year != max(year)) 
 
-# write.csv(covs_climate, paste0(root_dir, "processed/covs_climate.csv"), row.names = FALSE)
+# write.csv(covs_climate, "data/processed/covs_climate.csv", row.names = FALSE)
 
 # end script
