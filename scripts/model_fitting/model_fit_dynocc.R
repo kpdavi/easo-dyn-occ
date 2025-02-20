@@ -1,4 +1,4 @@
-# Purpose: Fit the dynamic occupancy model for Eastern Screech-Owl in Fort Collins, CO
+# Purpose: Fit and summarize output / calculate model diagnostics from the dynamic occupancy model for Eastern Screech-Owl in Fort Collins, CO
 # Author: Kristin P. Davis
 
 # Note: JAGS must be installed on one's computer to fit the model. Download JAGS at https://sourceforge.net/projects/mcmc-jags/
@@ -6,7 +6,8 @@
 # Required packages ----
 # install.packages("pacman")
 pacman::p_load(
-  runjags
+  runjags,
+  pROC
 )
 
 # library(car)
@@ -80,7 +81,7 @@ my_inits <- function(chain){
 # Specify parameters monitored ----
 ## Model output files can be large if all parameters of interest are modified in a single model fit, so this code fits the model with different groups of monitored parameters
 
-## Coefficients, parameters for missing LiDAR data, and Bayesian p-value for log likelihood (vectors)
+## Coefficients, parameters for missing LiDAR data, and Bayesian p-value for log likelihood (scalars)
 # monitor_params <- c("P_occ", "G_occ", "H_occ", "A_det", "mu.lidar", "sd.lidar", "log.bpv")
 
 ## Parameters for calculating area under the receiver operating characteristic curve (AUC)
@@ -106,7 +107,7 @@ mod_out <- run.jags(
 # Save output ----
 # Save output based on whether coefficients / vectors, parameters for calculating AUC, or occupancy process parameters are being monitored
 if (length(monitor_params) > 4) { 
-  # Coefficients / vectors
+  # Coefficients / scalars
   saveRDS(mod_out, 
           file = "output/mod_out_coeffs.rds")
 } else if (length(monitor_params) == 4) {
@@ -118,5 +119,19 @@ if (length(monitor_params) > 4) {
   saveRDS(mod_out, 
           file = "output/mod_out_auc.rds")
 }
-        
+
+
+# Summarize output for covariates / scalars -----
+
+
+
+# Calculate area under the receiver operator curve (AUC) ----
+## Calculate AUC for the prevalence process (i.e., at the level of the survey)
+mod_out_auc <- readRDS("output/mod_out_auc.rds")
+pocc_samples <- as.matrix(mod_out_auc$mcmc)
+pocc_mn <- data.frame(pocc = colnames(pocc_samples),
+                      mn = apply(pocc_samples, 2, mean))
+y_obs <- easo_obs$presence
+(auc.prev.pocc <- round(as.numeric(roc(y_obs, pocc_mn$mn)$auc), 3)) # compares the observed data to detection probability times occupancy probability
+
 # end script
