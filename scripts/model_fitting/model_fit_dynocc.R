@@ -7,12 +7,9 @@
 # install.packages("pacman")
 pacman::p_load(
   runjags,
+  tidyverse,
   pROC
 )
-
-# library(car)
-# library(MCMCvis)
-# library(pROC)
 
 set.seed = 4242
 
@@ -79,16 +76,17 @@ my_inits <- function(chain){
 }
 
 # Specify parameters monitored ----
-## Model output files can be large if all parameters of interest are modified in a single model fit, so this code fits the model with different groups of monitored parameters
+## Model output files can be large if all parameters of interest are monitored in a single model fit, so the code below fits the model with different groups of monitored parameters
 
 ## Coefficients, parameters for missing LiDAR data, and Bayesian p-value for log likelihood (scalars)
-# monitor_params <- c("P_occ", "G_occ", "H_occ", "A_det", "mu.lidar", "sd.lidar", "log.bpv")
+monitor_params <- c("P_occ", "G_occ", "H_occ", "A_det", "mu.lidar", "sd.lidar", "log.bpv")
 
 ## Parameters for calculating area under the receiver operating characteristic curve (AUC)
 # monitor_params <- c("pocc.sim")
 
 ## Occupancy process parameters
 # monitor_params <- c("phi", "gamma", "psi", "p")
+
 
 # Fit the model ----
 mod_out <- run.jags(
@@ -121,17 +119,25 @@ if (length(monitor_params) > 4) {
 }
 
 
-# Summarize output for covariates / scalars -----
+# Model diagnostics ----
+## Bayesian p value for log likelihood
+mod_out_occ <- readRDS("output/mod_out_occ.rds")
+mod_out_occ_jags_sum <- add.summary(mod_out_occ, confidence = c(0.95))
+mod_out_occ <- data.frame(mod_out_occ_jags_sum$summaries)
 
+(bpv_loglik <- mod_out_occ |>
+  rownames_to_column() |>
+  rename(param = rowname) |>
+  filter(param == "log.bpv") |>
+  pull(Mean))
 
-
-# Calculate area under the receiver operator curve (AUC) ----
+## Calculate area under the receiver operator curve (AUC) ----
 ## Calculate AUC for the prevalence process (i.e., at the level of the survey)
 mod_out_auc <- readRDS("output/mod_out_auc.rds")
 pocc_samples <- as.matrix(mod_out_auc$mcmc)
 pocc_mn <- data.frame(pocc = colnames(pocc_samples),
                       mn = apply(pocc_samples, 2, mean))
 y_obs <- easo_obs$presence
-(auc.prev.pocc <- round(as.numeric(roc(y_obs, pocc_mn$mn)$auc), 3)) # compares the observed data to detection probability times occupancy probability
+(auc.prev.pocc <- round(as.numeric(roc(y_obs, pocc_mn$mn)$auc), 3)) # compares the observed data to data generated from the model
 
 # end script
