@@ -50,7 +50,7 @@ model {
   
   # The data model via nested indexing
   for(j in 1:nsurveys){
-    # n.visits is the number of unique visits across the ENTIRE STUDY 
+    # n.visits is the number of unique visits across the entire study 
     logit(p[j]) <- inprod(A_det, X_det[j,])
     # multiply p by z
     mu.p[j] <- p[j]*z[site[j],year[j]]

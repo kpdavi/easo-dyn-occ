@@ -21,7 +21,7 @@ pacman::p_load(
 )
 
 # Function for calculating climate variables
-source("scripts/utils_calculate_daymet_climate_variables.R")
+source("scripts/utils/utils_calculate_daymet_climate_variables.R")
 
 
 # Global variables ----

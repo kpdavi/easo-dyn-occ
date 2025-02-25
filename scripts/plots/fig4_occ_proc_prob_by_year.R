@@ -8,8 +8,11 @@ pacman::p_load(
   runjags
 )
 
+# Source plotting function ----
+source("scripts/utils_plot_occ_prob_by_year.R")
 
-# Import data and model ouput ----
+
+# Import data and model output ----
 load("data/processed/model_data.RData")
 mod_out_occ <- readRDS("output/mod_out_occ.rds")
 mod_out_occ_df <- as.data.frame(t(as.matrix(mod_out_occ$mcmc)))
@@ -20,9 +23,6 @@ yr_last <- as.numeric(max(easo_obs$year))
 yr_first_min_1 <- min(easo_obs$year) - 1
 yr_last_min_1 <- max(easo_obs$year) - 1
 
-
-# Source plotting function ----
-source("scripts/utils_plot_occ_prob_by_year.R")
 
 # Format occupancy process parameters for plotting ----
 ## Calculate posterior means and 80 and 95% credible intervals ----
