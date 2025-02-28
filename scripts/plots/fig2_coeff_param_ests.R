@@ -8,7 +8,7 @@ pacman::p_load(
   runjags
 )
 
-# Import data and model ouput ----
+# Import data and model output ----
 load("data/processed/model_data.RData")
 mod_out <- readRDS("output/mod_out_coeffs.rds")
 
@@ -36,7 +36,7 @@ mod_param_ests_renamed <- mod_param_ests |>
 
 # Format posterior information for plotting ----
 mod_cat_dat_df <- data.frame(coeff.names = colnames(mod_param_ests_renamed),
-                          mn = mod_mean, 
+                          mn = mod_mean,
                           lci.80 = mod_lci_80,
                           uci.80 = mod_uci_80,
                           lci.95 = mod_lci_95,
@@ -57,13 +57,13 @@ cat_plot_labels <- as.vector(c("a) Persistence", "b) Colonization", "c) Initial 
 names(cat_plot_labels) <- c("Persistence", "Colonization", "Initial occupancy")
 
 ## Plot
-(plot_cat_coeff <- ggplot(mod_cat_dat, aes(x = mn, y = coeff)) + 
+(plot_cat_coeff <- ggplot(mod_cat_dat, aes(x = mn, y = coeff)) +
     geom_point(size = 3) +
     geom_segment(aes(x = lci.95, xend = uci.95, y = coeff, yend = coeff), color = "gray50", linewidth = 0.75) +
     geom_segment(aes(x = lci.80, xend = uci.80, y = coeff, yend = coeff), color = "black", linewidth = 1.5) +
-    geom_vline(xintercept = 0, colour = "blue", linetype = 2) + 
+    geom_vline(xintercept = 0, colour = "blue", linetype = 2) +
     facet_wrap(vars(proc_name), labeller = labeller(proc_name = cat_plot_labels)) +
-    labs(x = "Parameter estimate", 
+    labs(x = "Parameter estimate",
          y = "") +
     theme_bw() +
     theme(axis.text = element_text(size = 20, color = "black"),
@@ -75,8 +75,8 @@ names(cat_plot_labels) <- c("Persistence", "Colonization", "Initial occupancy")
 ## Save plot
 ggsave(filename = "output/plots/fig2_coeff_param_ests.png",
        plot = plot_cat_coeff,
-       width = 23, 
-       height = 6.5, 
+       width = 23,
+       height = 6.5,
        units = "in",
        dpi = 600)
 
