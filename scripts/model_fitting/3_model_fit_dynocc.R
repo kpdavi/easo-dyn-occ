@@ -4,7 +4,6 @@
 # Note: JAGS must be installed on one's computer to fit the model. Download JAGS at https://sourceforge.net/projects/mcmc-jags/
 
 # Required packages ----
-# install.packages("pacman")
 pacman::p_load(
   here,
   runjags,
