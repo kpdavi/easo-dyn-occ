@@ -14,7 +14,7 @@ pacman::p_load(
 set.seed = 4242
 
 # Import data ----
-load("data/processed/model_data.RData")
+load(here("data", "processed", "model_data.RData"))
 
 
 # Prepare data for the model ----
@@ -41,13 +41,13 @@ data_list <- list(
 my_inits <- function(chain){
   gen_list <- function(chain = chain){
     list(
-      z = matrix(1, 
-                 ncol = data_list$nyears, 
+      z = matrix(1,
+                 ncol = data_list$nyears,
                  nrow = data_list$nsites),
       P_occ = rnorm(cov_psi1_num, 0, 0.1),
       G_occ = rnorm(cov_gamma_num, 0, 0.1),
       H_occ = rnorm(cov_phi_num, 0, 0.1),
-      A_det = rnorm(cov_det_num, 0, 0.1), 
+      A_det = rnorm(cov_det_num, 0, 0.1),
       mu.lidar = rnorm(1, 0, 0.1),
       sd.lidar = rgamma(1, 0.1, 0.1),
       .RNG.name = switch(chain,
@@ -90,38 +90,38 @@ monitor_params <- c("P_occ", "G_occ", "H_occ", "A_det", "mu.lidar", "sd.lidar", 
 
 # Fit the model ----
 mod_out <- run.jags(
-  model = 'scripts/model_fitting/model_code_dynocc.txt',
-  monitor = monitor_params, 
+  model = here("scripts", "model_fitting", "model_code_dynocc.txt"),
+  monitor = monitor_params,
   data = data_list,
   inits = my_inits,
   n.chains = 4,
   adapt = 1000,
   burnin = 1000,
   sample = 10000,
-  thin = 5, 
+  thin = 5,
   method = "parallel"
 )
 
 # Save output ----
 # Save output based on whether coefficients / vectors, parameters for calculating AUC, or occupancy process parameters are being monitored
-if (length(monitor_params) > 4) { 
+if (length(monitor_params) > 4) {
   # Coefficients / scalars
-  saveRDS(mod_out, 
-          file = "output/mod_out_coeffs.rds")
+  saveRDS(mod_out,
+          file = here("output", "mod_out_coeffs.rds"))
 } else if (length(monitor_params) == 4) {
   # Occupancy process parameters
-  saveRDS(mod_out, 
-          file = "output/mod_out_occ.rds")
+  saveRDS(mod_out,
+          file = here("output", "mod_out_occ.rds"))
 } else {
   # Parameters for calculating AUC
-  saveRDS(mod_out, 
-          file = "output/mod_out_auc.rds")
+  saveRDS(mod_out,
+          file = here("output", "mod_out_auc.rds"))
 }
 
 
 # Model diagnostics ----
 ## Bayesian p value for log likelihood
-mod_out_occ <- readRDS("output/mod_out_occ.rds")
+mod_out_occ <- readRDS(here("output", "mod_out_occ.rds"))
 mod_out_occ_jags_sum <- add.summary(mod_out_occ, confidence = c(0.95))
 mod_out_occ <- data.frame(mod_out_occ_jags_sum$summaries)
 
@@ -133,7 +133,7 @@ mod_out_occ <- data.frame(mod_out_occ_jags_sum$summaries)
 
 ## Calculate area under the receiver operator curve (AUC) ----
 ## Calculate AUC for the prevalence process (i.e., at the level of the survey)
-mod_out_auc <- readRDS("output/mod_out_auc.rds")
+mod_out_auc <- readRDS(here("output", "mod_out_auc.rds"))
 pocc_samples <- as.matrix(mod_out_auc$mcmc)
 pocc_mn <- data.frame(pocc = colnames(pocc_samples),
                       mn = apply(pocc_samples, 2, mean))
