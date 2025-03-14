@@ -30,7 +30,7 @@ surveys_cov_det <- read.csv(here("data", "processed", "surveys_covs_det.csv"), h
 cov_tree <- read.csv(here("data", "processed", "covs_tree.csv"), header = TRUE)
 cov_climate <- read.csv(here("data", "processed", "covs_climate.csv"), header = TRUE)
 cov_lidar <- read.csv(here("data", "processed", "covs_lidar.csv"), header = TRUE)
-load(here("data", "processed", "model_data.RData"))
+coeff_names <- read.csv(here("data", "processed", "coeff_names.csv"), header = TRUE)
 
 ## Model output
 mod_out <- readRDS(here("output", "mod_out_coeffs.rds"))

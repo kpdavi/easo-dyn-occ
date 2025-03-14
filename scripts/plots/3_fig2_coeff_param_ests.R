@@ -9,7 +9,7 @@ pacman::p_load(
 )
 
 # Import data and model output ----
-load(here("data", "processed", "model_data.RData"))
+coeff_names <- read.csv(here("data", "processed", "coeff_names.csv"))
 mod_out <- readRDS(here("output", "mod_out_coeffs.rds"))
 
 

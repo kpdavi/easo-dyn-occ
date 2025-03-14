@@ -10,11 +10,12 @@ pacman::p_load(
 )
 
 # Source plotting function ----
-source(here("scripts", "utils_plot_occ_prob_by_year.R"))
+source(here("scripts", "utils", "utils_plot_occ_prob_by_year.R"))
 
 
 # Import data and model output ----
-load(here("data", "processed", "model_data.RData"))
+easo_obs <- read.csv(here("data", "raw", "surveys.csv"), header = TRUE)
+coeff_names <- read.csv(here("data", "processed", "coeff_names.csv"))
 mod_out_occ <- readRDS(here("output", "mod_out_occ.rds"))
 mod_out_occ_df <- as.data.frame(t(as.matrix(mod_out_occ$mcmc)))
 
