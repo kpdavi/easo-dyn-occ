@@ -2,15 +2,15 @@
 # Author: Kristin P. Davis
 
 # Required packages ----
-# install.packages("pacman")
 pacman::p_load(
+  here,
   tidyverse,
   runjags
 )
 
 # Import data and model output ----
-load("data/processed/model_data.RData")
-mod_out <- readRDS("output/mod_out_coeffs.rds")
+load(here("data", "processed", "model_data.RData"))
+mod_out <- readRDS(here("output", "mod_out_coeffs.rds"))
 
 
 # Calculate posterior means and credible intervals ----
@@ -73,11 +73,11 @@ names(cat_plot_labels) <- c("Persistence", "Colonization", "Initial occupancy")
 )
 
 ## Save plot
-ggsave(filename = "output/plots/fig2_coeff_param_ests.png",
-       plot = plot_cat_coeff,
-       width = 23,
-       height = 6.5,
-       units = "in",
-       dpi = 600)
+# ggsave(filename = here("output", "plots", "fig2_coeff_param_ests.png"),
+#        plot = plot_cat_coeff,
+#        width = 23,
+#        height = 6.5,
+#        units = "in",
+#        dpi = 600)
 
 # end script
