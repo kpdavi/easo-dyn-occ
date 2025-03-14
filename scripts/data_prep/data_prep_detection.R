@@ -2,8 +2,8 @@
 # Author: Kristin P. Davis
 
 # Required packages ----
-# install.packages("pacman")
 pacman::p_load(
+  here,
   tidyverse,
   suncalc
 )
@@ -11,7 +11,7 @@ pacman::p_load(
 
 # Import data ----
 ## Surveys ----
-surveys <- read.csv(paste0(root_dir, "data/raw/surveys.csv"), header = TRUE)
+surveys <- read.csv(here("data", "raw", "surveys.csv"), header = TRUE)
 
 
 # Generate detection covariates ----
@@ -45,7 +45,7 @@ moon_phase <- date_time |>
 surveys_covs_det <- surveys |>
   mutate(date = ymd(date)) |>
   left_join(moon_phase, by = c("Transect", "year", "date", "start.time"))
-  
-# write.csv(surveys_covs_det, "data/processed/surveys_covs_det.csv", row.names = FALSE)
+
+# write.csv(surveys_covs_det, here("data", "processed", "surveys_covs_det.csv"), row.names = FALSE)
 
 # end script
