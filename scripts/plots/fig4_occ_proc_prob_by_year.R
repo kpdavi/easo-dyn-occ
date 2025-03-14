@@ -2,19 +2,19 @@
 # Author: Kristin P. Davis
 
 # Required packages ----
-# install.packages("pacman")
 pacman::p_load(
+  here,
   tidyverse,
   runjags
 )
 
 # Source plotting function ----
-source("scripts/utils_plot_occ_prob_by_year.R")
+source(here("scripts", "utils_plot_occ_prob_by_year.R"))
 
 
 # Import data and model output ----
-load("data/processed/model_data.RData")
-mod_out_occ <- readRDS("output/mod_out_occ.rds")
+load(here("data", "processed", "model_data.RData"))
+mod_out_occ <- readRDS(here("output", "mod_out_occ.rds"))
 mod_out_occ_df <- as.data.frame(t(as.matrix(mod_out_occ$mcmc)))
 
 # Identify start and end years (for filtering and plotting)
@@ -30,10 +30,10 @@ yr_last_min_1 <- max(easo_obs$year) - 1
 occ_params_df <- mod_out_occ_df |>
   rownames_to_column() |>
   rename(mon_param = rowname) |>
-  
+
   # Filter out detection parameters
   filter(!str_detect(mon_param, "p\\[")) |>
-  
+
   # Extract site, year, and parameter info from the model output for monitored parameters
   mutate(
     site_id = if_else(
@@ -48,12 +48,12 @@ occ_params_df <- mod_out_occ_df |>
     ),
     param = str_extract(mon_param, "^[^\\[]*")) |>
   relocate(site_id, year_id, param, .before = V1) |>
-  
+
   dplyr::select(param, site_id, year_id, everything(), -mon_param) |>
-  
+
   # Convert dataframe from wide to long format
   pivot_longer(cols = contains("V"), names_to = "n_iter", values_to = "samp") |>
-  
+
   # Calculate means and credible intervals by year (across sites)
   group_by(param, year_id) |>
   summarise(
@@ -63,7 +63,7 @@ occ_params_df <- mod_out_occ_df |>
     lci.80 = quantile(samp, 0.10),
     uci.80 = quantile(samp, 0.90)
   ) |>
-  
+
   # Calculate year column in YYYY format
   mutate(
     year = year_id + yr_first_min_1
@@ -75,14 +75,14 @@ p_samples_raw <- as.data.frame(t(p_psi_samples[, grep("p[", colnames(p_psi_sampl
 
 # Calculate survey-level mean detection
 p_samples <- p_samples_raw |>
-  
+
   # Calculate survey-level means
   mutate(p_surv_mean = rowMeans(across(everything()))) |>
-  
+
   # Extract site, year, and parameter info from the model output for monitored parameters
   rownames_to_column() |>
   rename(mon_param = rowname) |>
-  
+
   mutate(
     survey_id = if_else(
       str_detect(mon_param, "\\[\\d+,\\d+\\]"),
@@ -120,15 +120,15 @@ p_site_year <- easo_obs |>
 
 (plots_occ_det = cowplot::plot_grid(
   plot_phi, plot_col, plot_psi, plot_p,
-  nrow = 1, 
+  nrow = 1,
   ncol = 4,
   align = "h"))
 
 ## Save plot
-# ggsave(filename = "output/plots/fig4_occ_proc_prob.png",
+# ggsave(filename = here("output", "plots", "fig4_occ_proc_prob.png"),
 #        plot = plots_occ_det,
-#        width = 24, 
-#        height = 5, 
+#        width = 24,
+#        height = 5,
 #        units = "in",
 #        dpi = 600)
 
