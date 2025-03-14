@@ -11,8 +11,8 @@
 
 
 # Required packages and functions ----
-# install.packages("pacman")
 pacman::p_load(
+  here,
   tidyverse,
   sf,
   terra,
@@ -21,7 +21,7 @@ pacman::p_load(
 )
 
 # Function for calculating climate variables
-source("scripts/utils/utils_calculate_daymet_climate_variables.R")
+source(here("scripts", "utils", "utils_calculate_daymet_climate_variables.R"))
 
 
 # Global variables ----
@@ -31,7 +31,7 @@ year_vec <- c(2013:2022)  # focal years
 
 # Import data ----
 ## Transects ----
-sites <- read.csv(paste0(root_dir, "data/raw/sites.csv"), header = TRUE)
+sites <- read.csv(here("data", "raw", "sites.csv"), header = TRUE)
 sites_sp <- st_as_sf(sites, coords = c("longitude", "latitude"), crs = 4326)
 
 ## Climate ----
@@ -59,7 +59,7 @@ fc_daymet_select <- FedData::get_daymet(
 
 # Calculate climate variables ----
 ## Specify date range for breeding season and winter ----
-### Breeding season: March 1-June 15 (Birds of the World species account) 
+### Breeding season: March 1-June 15 (Birds of the World species account)
 ### Winter: November 1-February 28/29 preceding the breeding season
 ### Picked a year at random in order to correctly specify the date range
 breeding_start <- "2022-03-01"
@@ -90,8 +90,8 @@ clim_calcs_comb <- plyr::join_all(list(tmin_breeding_avg, tmin_winter_avg, prcp_
 
 covs_climate <- clim_calcs_comb |>
   mutate(year = as.numeric(gsub("X", "" , year))) |>
-  filter(year != max(year)) 
+  filter(year != max(year))
 
-# write.csv(covs_climate, "data/processed/covs_climate.csv", row.names = FALSE)
+# write.csv(covs_climate, here("data", "processed", "covs_climate.csv"), row.names = FALSE)
 
 # end script
