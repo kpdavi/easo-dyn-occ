@@ -2,17 +2,17 @@
 # Author: Kristin P. Davis
 
 # Required packages ----
-# install.packages("pacman")
 pacman::p_load(
+  here,
   tidyverse
 )
 
 
 # Import data ----
-surveys_cov_det <- read.csv("data/processed/surveys_covs_det.csv", header = TRUE)
-cov_tree <- read.csv("data/processed/covs_tree.csv", header = TRUE)
-cov_climate <- read.csv("data/processed/covs_climate.csv", header = TRUE)
-cov_lidar <- read.csv("data/processed/covs_lidar.csv", header = TRUE)
+surveys_cov_det <- read.csv(here("data", "processed", "surveys_covs_det.csv"), header = TRUE)
+cov_tree <- read.csv(here("data", "processed", "covs_tree.csv"), header = TRUE)
+cov_climate <- read.csv(here("data", "processed", "covs_climate.csv"), header = TRUE)
+cov_lidar <- read.csv(here("data", "processed", "covs_lidar.csv"), header = TRUE)
 
 # Focal covariates ----
 cols_id <- c("Transect", "year", "site_id", "year_id") # non-covariate columns
@@ -23,8 +23,8 @@ cov_names_lidar <- setdiff(names(cov_lidar), cols_id)
 cov_names_climate <- setdiff(names(cov_climate), cols_id)
 (cov_names <- data.frame(names_cov = c("intercept", cov_names_tree, cov_names_lidar, cov_names_climate)))
 
-cov_names$names_real <- c("Intercept", 
-                          "Proportion of tree cover", 
+cov_names$names_real <- c("Intercept",
+                          "Proportion of tree cover",
                           "Cohesion of tree cover (%)",
                           "Standard deviation in vegetation height (m)",
                           "Breeding season minimum temperature (\u00B0C)",
@@ -61,7 +61,7 @@ cov_gamma_coeffs <- cbind(cov_gamma_foc,
                          data.frame(param = cov_gamma_param_name,
                                     proc = "Colonization"))
 
-#### Persistence 
+#### Persistence
 cov_phi_foc <- cov_names |>
   filter(names_cov %in% cov_phi_mod) |>
   mutate(names_cov = factor(names_cov, levels = cov_phi_mod)) %>%
@@ -139,7 +139,7 @@ for(i in 1:cov_psi1_num) {
     arrange(Transect, year) |>
     pivot_wider(id_cols = Transect, names_from = year, values_from = cov_psi1_names[i]) |>
     dplyr::select(-Transect)
-  
+
   # Assign df to list and name it as the focal covariate
   cov_psi1_list[[i]] <- cov_psi1_foc
   names(cov_psi1_list)[i] <- cov_psi1_names[i]
@@ -150,7 +150,7 @@ X_psi1 = array(unlist(cov_psi1_list), dim = c(as.numeric(nrow(cov_psi1_foc)), as
 
 
 ### Colonization ----
-cov_gamma <- cov_tree_sc |> 
+cov_gamma <- cov_tree_sc |>
   arrange(Transect, year) |>
   left_join(cov_climate_sc, by = "year") |>
   mutate(intercept = 1) |>
@@ -165,7 +165,7 @@ for(i in 1:cov_gamma_num) {
     arrange(Transect, year) |>
     pivot_wider(id_cols = Transect, names_from = year, values_from = cov_gamma_names[i]) |>
     dplyr::select(-Transect)
-  
+
   # Assign df to list and name it as the focal covariate
   cov_gamma_list[[i]] <- cov_gamma_foc
   names(cov_gamma_list)[i] <- cov_gamma_names[i]
@@ -176,7 +176,7 @@ X_gam <- array(unlist(cov_gamma_list), dim = c(as.numeric(nrow(cov_gamma_foc)), 
 
 
 ### Persistence ----
-cov_phi <- cov_tree_sc |> 
+cov_phi <- cov_tree_sc |>
   arrange(Transect, year) |>
   left_join(cov_climate_sc, by = "year") |>
   mutate(intercept = 1) |>
@@ -191,7 +191,7 @@ for(i in 1:cov_phi_num) {
     arrange(Transect, year) |>
     pivot_wider(id_cols = Transect, names_from = year, values_from = cov_phi_names[i]) |>
     dplyr::select(-Transect)
-  
+
   # Assign df to list and name it as the focal covariate
   cov_phi_list[[i]] <- cov_phi_foc
   names(cov_phi_list)[i] <- cov_phi_names[i]
@@ -202,6 +202,6 @@ X_phi <- array(unlist(cov_phi_list), dim = c(as.numeric(nrow(cov_phi_foc)), as.n
 
 
 # Combine objects for model fitting and save ----
-save(easo_obs, cov_det_num, cov_psi1_num, cov_gamma_num, cov_phi_num, X_det, X_psi1, X_phi, X_gam, position_lidar, coeff_names, file = "data/processed/model_data.RData")
+save(easo_obs, cov_det_num, cov_psi1_num, cov_gamma_num, cov_phi_num, X_det, X_psi1, X_phi, X_gam, position_lidar, coeff_names, file = here("data", "processed", "model_data.RData"))
 
 # end script
