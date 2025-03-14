@@ -2,8 +2,8 @@
 # Author: Kristin P. Davis
 
 # Required packages ----
-# install.packages("pacman")
 pacman::p_load(
+  here,
   tidyverse,
   runjags,
   cowplot
@@ -18,22 +18,22 @@ proportion_same_direction <- function(samples) {
 }
 
 # Predict data from model
-source("scripts/utils/utils_predict_data_from_model.R")
+source(here("scripts", "utils", "utils_predict_data_from_model.R"))
 
 # Plot predicted data
-source("scripts/utils/utils_plot_predicted_data.R")
+source(here("scripts", "utils", "utils_plot_predicted_data.R"))
 
 
 # Import data and model output ----
 ## Data
-surveys_cov_det <- read.csv("data/processed/surveys_covs_det.csv", header = TRUE)
-cov_tree <- read.csv("data/processed/covs_tree.csv", header = TRUE)
-cov_climate <- read.csv("data/processed/covs_climate.csv", header = TRUE)
-cov_lidar <- read.csv("data/processed/covs_lidar.csv", header = TRUE)
-load("data/processed/model_data.RData")
+surveys_cov_det <- read.csv(here("data", "processed", "surveys_covs_det.csv"), header = TRUE)
+cov_tree <- read.csv(here("data", "processed", "covs_tree.csv"), header = TRUE)
+cov_climate <- read.csv(here("data", "processed", "covs_climate.csv"), header = TRUE)
+cov_lidar <- read.csv(here("data", "processed", "covs_lidar.csv"), header = TRUE)
+load(here("data", "processed", "model_data.RData"))
 
 ## Model output
-mod_out <- readRDS("output/mod_out_coeffs.rds")
+mod_out <- readRDS(here("output", "mod_out_coeffs.rds"))
 
 
 # Identify occupancy process covariates with probability of direction (pd) > 0.8 ----
@@ -47,7 +47,7 @@ names(posterior_samples_foc_list) <- covs_foc
 
 ## Create a data frame with the probability of direction
 prop_dir_mn <- sapply(posterior_samples_foc_list, proportion_same_direction)
-prop_dir_mn_df <- data.frame(param = names(prop_dir_mn), 
+prop_dir_mn_df <- data.frame(param = names(prop_dir_mn),
                              pd = round(prop_dir_mn, 3))
 prop_dir_mn_filt <- prop_dir_mn_df |>
   filter(pd > 0.8) |>
@@ -98,23 +98,23 @@ empty_grob <- grid::nullGrob()
 
 ## Plot
 plot_preds_comb <- cowplot::plot_grid(
-  
+
   # Persistence
   plot_phi_tree.coh, plot_phi_avg.breeding.tmin, plot_phi_avg.winter.tmin, plot_phi_lag.avg.winter.tmin,
-  
+
   # Colonization
   plot_gamma_tree.coh, plot_gamma_avg.breeding.tmin, plot_gamma_sum.winter.prcp, empty_grob,
-  
+
   # Initial occupancy
   plot_psi1_tree.prop, empty_grob, empty_grob, empty_grob,
-  
+
   nrow = 3,
   ncol = 4,
   align = "h",
   axis = "l")
 
 ## Save plot
-# ggsave(filename = "output/plots/fig3_coeff_param_preds.png",
+# ggsave(filename = here("output", "plots", "fig3_coeff_param_preds.png"),
 #        plot = plot_preds_comb,
 #        width = 18,
 #        height = 11,
