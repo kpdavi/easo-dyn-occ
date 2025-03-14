@@ -202,6 +202,9 @@ X_phi <- array(unlist(cov_phi_list), dim = c(as.numeric(nrow(cov_phi_foc)), as.n
 
 
 # Combine objects for model fitting and save ----
-save(easo_obs, cov_det_num, cov_psi1_num, cov_gamma_num, cov_phi_num, X_det, X_psi1, X_phi, X_gam, position_lidar, coeff_names, file = here("data", "processed", "model_data.RData"))
+save(easo_obs, cov_det_num, cov_psi1_num, cov_gamma_num, cov_phi_num, X_det, X_psi1, X_phi, X_gam, position_lidar, file = here("data", "processed", "model_data.RData"))
+
+# Save dataframe with parameter and real names for coefficients ----
+write.csv(coeff_names, here("data", "processed", "coeff_names.csv"), row.names = FALSE)
 
 # end script
