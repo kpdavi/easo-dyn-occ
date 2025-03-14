@@ -11,8 +11,8 @@
 
 
 # Required packages ----
-# install.packages("pacman")
 pacman::p_load(
+  here,
   tidyverse,
   sf,
   terra,
@@ -27,12 +27,12 @@ year_begin <- 2012 # for calculating a 'year' column after calculating the cohes
 
 # Import data ----
 ## Transects ----
-sites <- read.csv("data/raw/sites.csv", header = TRUE)
+sites <- read.csv(here("data", "raw", "sites.csv"), header = TRUE)
 sites$ID <- as.numeric(as.factor(sites$Transect))
 sites_sp <- st_as_sf(sites, coords = c("longitude", "latitude"), crs = 4326)
 
 ## Tree cover ----
-tree_rasts <- terra::rast(paste0(root_dir, "data/raw/RAP_tree_cover_2013-2021.tif"))
+tree_rasts <- terra::rast(here("data", "raw", "RAP_tree_cover_2013-2021.tif"))
 plot(tree_rasts)
 
 ## Get unique values of tree cover, to check values are reasonable
@@ -54,9 +54,9 @@ sites_poly <- st_transform(sites_poly, crs = crs(tree_rasts))
 # Calculate tree cover variables ----
 ## Average proportion of tree cover ----
 tree_avg_extract <- terra::extract(
-  x = tree_rasts, 
-  y = sites_poly, 
-  fun = mean, 
+  x = tree_rasts,
+  y = sites_poly,
+  fun = mean,
   method = "bilinear",
   ID = TRUE,
   raw = TRUE,
@@ -66,8 +66,8 @@ tree_avg_extract <- terra::extract(
 # Format output
 tree_avg_extract_long <- tree_avg_extract |>
   pivot_longer(
-    cols = matches("\\d{4}"), 
-    names_to = "names", 
+    cols = matches("\\d{4}"),
+    names_to = "names",
     values_to = "tree.prop"
     ) |>
   mutate(
@@ -93,8 +93,8 @@ plot(tree_rasts_reclass)
 
 ## Check format of reclassified raster ----
 ### Rasters need to be in a metric coordinate reference system (crs) if units of results are based on cell sizes and/or distances
-check_landscape(tree_rasts_reclass) 
-crs(tree_rasts_reclass)  # not a metric crs 
+check_landscape(tree_rasts_reclass)
+crs(tree_rasts_reclass)  # not a metric crs
 
 ### Reproject data into a metric crs
 crs_utmzone_13 <- "26913" # EPSG code for NAD83 UTM Zone 13, where Fort Collins is located
@@ -108,11 +108,11 @@ check_landscape(tree_rasts_reclass_utm13)  # passes check for metric crs
 
 ## Calculate cohesion ----
 tree_coh_extract <- sample_lsm(
-  tree_rasts_reclass_utm13, 
-  y = sites_poly_utm13, 
-  plot_id = sites_poly_utm13$Transect, 
-  shape = "circle", 
-  size = 250, 
+  tree_rasts_reclass_utm13,
+  y = sites_poly_utm13,
+  plot_id = sites_poly_utm13$Transect,
+  shape = "circle",
+  size = 250,
   what = "lsm_c_cohesion"
   )
 
