@@ -5,7 +5,8 @@
 pacman::p_load(
   here,
   tidyverse,
-  runjags
+  runjags,
+  cowplot
 )
 
 # Source plotting function ----
