@@ -81,11 +81,11 @@ my_inits <- function(chain){
 ## Coefficients, parameters for missing LiDAR data, and Bayesian p-value for log likelihood (scalars)
 monitor_params <- c("P_occ", "G_occ", "H_occ", "A_det", "mu.lidar", "sd.lidar", "log.bpv")
 
-## Parameters for calculating area under the receiver operating characteristic curve (AUC)
-# monitor_params <- c("pocc.sim")
-
 ## Occupancy process parameters
 # monitor_params <- c("phi", "gamma", "psi", "p")
+
+## Parameters for calculating area under the receiver operating characteristic curve (AUC)
+monitor_params <- c("pocc.sim")
 
 
 # Fit the model ----
