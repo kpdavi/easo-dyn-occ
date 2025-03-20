@@ -1,6 +1,6 @@
 # Code for Eastern Screech-Owl dynamic occupancy analyses for Fort Collins, CO
 
-This repository includes presence / absence survey data from 2013--2021 from Fort Collins, Colorado for Eastern screech-owl (*Megascops asio maxwelliae*) and vegetation and climate variables associated with survey locations, and scripts for analyzing and plotting these data in R. We fit a dynamic occupancy model in the Bayesian framework to explore environmental factors associated with the species' breeding season occupancy dynamics in an understudied portion of its range and to inform local land management efforts. We found that Eastern Screech-Owl persistence probability decreased while colonization probability increased with aggregation of tree cover and average breeding season temperature. We also found colonization probability increased with cumulative winter precipitation, and persistence probability decreased with average winter minimum temperature. Overall, our results suggest that this population of Eastern Screech-Owls responds to climate before and during the breeding season in complex ways, and that this species appears to experience high turnover in this study area along the western edge of its continental range. The code in this repository reproduces the statistics and figures of the corresponding paper.
+This repository includes presence / absence survey data from 2013---2021 from Fort Collins, Colorado for Eastern screech-owl (*Megascops asio maxwelliae*) and vegetation and climate variables associated with survey locations, and scripts for analyzing and plotting these data in R. We fit a dynamic occupancy model in the Bayesian framework to explore environmental factors associated with the species' breeding season occupancy dynamics in an understudied portion of its range and to inform local land management efforts. We found that Eastern Screech-Owl persistence probability decreased while colonization probability increased with aggregation of tree cover and average breeding season temperature. We also found colonization probability increased with cumulative winter precipitation, and persistence probability decreased with average winter minimum temperature. Overall, our results suggest that this population of Eastern Screech-Owls responds to climate before and during the breeding season in complex ways, and that this species appears to experience high turnover in this study area along the western edge of its continental range. The code in this repository reproduces the statistics and figures of the corresponding paper.
 
 ## Workflow notes
 
@@ -44,9 +44,10 @@ Within the subfolders of **scripts** &#x1F4C1;, scripts with the same numeric pr
   + `2_model_prep.R` &#x1F4C4;. Code to format the climate and vegetation covariates and generate variables needed for model fitting. The output of the script is `model_data.RData` in **data/processed** &#x1F4C1;.
 * **model_fitting** &#x1F4C1;
   + `3_model_fit_dynocc.R` &#x1F4C4;. Code to fit the dynamic occupancy model in the Bayesian framework. Outputs of the script are in **output** &#x1F4C1; and include parameter estimates for coefficients / scalars (`mod_out_coeffs.rds`), occupancy process parameters (`mod_out_occ.rds`), or parameters for calculating area under the receiver operating characteristic curve (AUC; `mod_out_auc.rds`).
+  + `4_summarize_model_output_diagnostics.R` &#x1F4C4;. Code to summarize results --- posterior means, 95% credible intervals, and probability of direction [*pd*] --- for focal coefficient parameters, and model diagnostics --- Bayesian *p* value for the log likelihood and area under the receiver operating characteristic curve [AUC] --- from the dynamic occupancy model.
   + `model_code_dynocc.txt` &#x1F4C4;. Text file of the dynamic occupancy model in JAGS. This file is called within the function to fit the model in the `3_model_fit_dynocc.R` script.
 * **plots** &#x1F4C1;
-  + `3_fig*.R` &#x1F4C4;. Code to create figures 2--4 in the publication. Outputs of these scripts are in **plots** &#x1F4C1; and include `fig*.png` (described in more detail below).
+  + `4_fig*.R` &#x1F4C4;. Code to create figures 2--4 in the publication. Outputs of these scripts are in **plots** &#x1F4C1; and include `4_fig*.png` (described in more detail below).
 * **utils** &#x1F4C1;
   + `utils_*.R` &#x1F4C4;. Helper functions for calculating climate variables (`utils_calculate_daymet_climate_variables.R`), predicting data from the dynamic occupancy model (`utils_predict_data_from_model.R`), and generating figures (`utils_plot_occ_prob_by_year.R` and `utils_plot_predicted_data.R`).
 
@@ -58,7 +59,7 @@ All model outputs created in the analyses are contained in the following folder:
 ### Plots
 Figures that were created from data in the manuscript are contained in the following folder:
 
-* **plots**. Plots for Figures 2--4 in the manuscript, which visualize parameter estimates for model coefficients (`fig2_coeff_param_ests.png`), model-predicted probability of persistence, colonization, and initial occupancy as a function of covariates (`fig3_coeff_param_preds.png`), and model-predicted probability of persistence, colonization, occupancy, and detection by year (`fig4_occ_proc_prob.png`).
+* **plots** &#x1F4C1;. Plots for Figures 2--4 in the manuscript (all with file name prefix `4_`), which visualize parameter estimates for model coefficients (`fig2_coeff_param_ests.png`), model-predicted probability of persistence, colonization, and initial occupancy as a function of covariates (`fig3_coeff_param_preds.png`), and model-predicted probability of persistence, colonization, occupancy, and detection by year (`fig4_occ_proc_prob.png`).
 
 ## Sharing/Access information
 
