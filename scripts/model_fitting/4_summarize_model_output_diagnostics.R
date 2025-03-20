@@ -41,7 +41,7 @@ coeff_names <- coeff_names |>
   )
 
 # Model diagnostics ----
-## Bayesian p value for log likelihood
+## Bayesian p value for log likelihood ----
 mod_out_coeff_jags_sum <- add.summary(mod_out_coeffs_jags, confidence = c(0.95))
 mod_out_coeff <- data.frame(mod_out_coeff_jags_sum$summaries)
 
