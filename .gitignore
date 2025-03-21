@@ -8,3 +8,4 @@
 
 output/*.rds
 data/raw/survey.csv
+data/processed/survey_covs_det.csv
