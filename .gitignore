@@ -7,3 +7,4 @@
 *.html
 
 output/*.rds
+data/raw/survey.csv
