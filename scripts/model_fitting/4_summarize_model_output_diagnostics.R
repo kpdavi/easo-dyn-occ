@@ -59,44 +59,4 @@ pocc_mn <- data.frame(pocc = colnames(pocc_samples),
 y_obs <- surveys$presence
 (auc_prev_pocc <- round(as.numeric(roc(y_obs, pocc_mn$mn)$auc), 3))
 
-
-# Table of means, credible intervals, and probability of direction for coefficient parameters (Table S3) ----
-## Summarize posteriors
-mod_out_coeff_sum <- data.frame(mod_out_coeff_jags_sum$summaries)
-
-mod_out_coeff_df <- mod_out_coeff_sum |>
-  rownames_to_column() |>
-  filter(!rowname %in% c("log.bpv", "Mode", "MCerr", "mu.lidar", "sd.lidar")) |>
-  mutate(across(where(is.numeric), ~ format(round(., 3), nsmall = 3))) |>
-  mutate(`95% credible interval` = paste0("(", Lower95, ", ", Upper95, ")"),
-         SSeff = as.integer(SSeff)) |>
-  dplyr::select(rowname, Mean, `95% credible interval`, Median, SD, MC.ofSD, SSeff, AC.50, psrf) |>
-  rename(
-    Parameter = rowname,
-    `Standard deviation` = SD,
-    `MCMC standard error (% of SD)` = MC.ofSD,
-    `Effective sample size` = SSeff,
-    Autocorrelation = AC.50,
-    `R-hat` = psrf
-  )
-
-## Calculate the proportion of the posterior in the same direction of the mean (pd)
-### Filter model output to the coefficient parameters
-params_foc <- rownames(mod_out_coeff_sum)[grep("^[PGHA]_", rownames(mod_out_coeff_sum))]
-mod_out_coeffs_mat <- as.matrix(mod_out_coeffs_jags$mcmc)
-posterior_samples_list <- lapply(params_foc, function(col) mod_out_coeffs_mat[, col, drop = FALSE])
-names(posterior_samples_list) <- params_foc
-
-### Calculate pd
-prop_dir_mn <- sapply(posterior_samples_list, proportion_same_direction)
-prop_dir_mn_df <- data.frame(Parameter = names(prop_dir_mn),
-                             pd = round(prop_dir_mn, 3))
-
-## Add pd to table of summarized output
-mod_out_coeff_pd <- mod_out_coeff_df |>
-  left_join(prop_dir_mn_df, by = "Parameter") |>
-  left_join(coeff_names, by = "Parameter") |>
-  dplyr::select(-Parameter) |>
-  relocate(Process, Covariate, .before = "Mean")
-
 # end script
