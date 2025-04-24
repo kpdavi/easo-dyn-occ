@@ -77,12 +77,12 @@ All scripts were run using R Core Team (2024). Loaded packages / software are in
   distributions for MCMC models in JAGS. *Journal of Statistical Software* 71(9): 1-25. <https://doi.org/10.18637/jss.v071.i09>.
 - Grolemund, G., and H. Wickham. 2011. Dates and times made easy with
   lubridate. *Journal of Statistical Software* 40(3): 1-25. <https://www.jstatsoft.org/v40/i03/>.
-- Hesselbarth, M.H.K., M. Sciaini, K.A. With, K. Wiegand, and J. Nowosad. 2019.     landscapemetrics: an open-source R tool to calculate landscape metrics. Ecography 42: 1648-1657 (v2.2).
+- Hesselbarth, M.H.K., M. Sciaini, K.A. With, K. Wiegand, and J. Nowosad. 2019.     landscapemetrics: an open-source R tool to calculate landscape metrics. *Ecography* 42: 1648-1657 (v2.2).
 - Hijmans, R. 2024. _terra: Spatial Data Analysis_. R package version 1.7-78,
   <https://CRAN.R-project.org/package=terra>.
 - Lüdecke, D. 2018. ggeffects: Tidy data frames of marginal effects from regression
   models. *Journal of Open Source Software* 3(26): 772. <https://doi.org/10.21105/joss.00772>.
-- Müller, K. 2020. here: A Simpler Way to Find Your Files. R package version 1.0.1,
+- Müller, K. 2020. _here: A Simpler Way to Find Your Files_. R package version 1.0.1,
   <https://CRAN.R-project.org/package=here>.
 - Pebesma, E., & R. Bivand. 2023. *Spatial Data Science: With Applications in
   R*. Chapman and Hall/CRC. <https://doi.org/10.1201/9780429459016>
