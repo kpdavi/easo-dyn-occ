@@ -11,26 +11,9 @@ pacman::p_load(
 
 # Import data / model outputs ----
 surveys <- read.csv(here("data", "raw", "surveys.csv"))
-coeff_names <- read.csv(here("data", "processed", "coeff_names.csv"), header = TRUE)
 mod_out_occ_jags <- readRDS(here("output", "mod_out_occ.rds"))
 mod_out_auc_jags <- readRDS(here("output", "mod_out_auc.rds"))
 mod_out_coeffs_jags <- readRDS(here("output", "mod_out_coeffs.rds"))
-
-## Format names of coefficients
-det_covs <- data.frame(
-  proc = rep("Detection", 3),
-  param = paste0("A_det[", 1:3, "]"),
-  names_real = c("Intercept", "Ordinal date", "Moon phase")
-)
-
-coeff_names <- coeff_names |>
-  dplyr::select(param, proc, names_real) |>
-  bind_rows(det_covs) |>
-  rename(
-    Parameter = param,
-    Covariate = names_real,
-    Process = proc
-  )
 
 # Model diagnostics ----
 ## Bayesian p value for log likelihood ----
