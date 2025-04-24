@@ -63,7 +63,7 @@ Figures that were created from data in the manuscript are contained in the follo
 
 ## Sharing/Access information
 
-Research permits to conduct surveys for Eastern screech-owl were secured with the City of Fort Collins Natural Areas Department.
+Research permits to conduct surveys for Eastern screech-owl were secured with the City of Fort Collins Natural Areas Department. The Eastern Screech-Owl monitoring program is ongoing and **potential users of the data are encouraged to contact [Rob Sparks](mailto:Rob.Sparks@birdconservancy.org?subject=inquiry%20about%20Eastern%20Screech-Owl%20project) for additional information or potential for collaboration.**
 
 ## Code/Software
 
