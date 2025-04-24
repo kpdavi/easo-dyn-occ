@@ -9,14 +9,6 @@ pacman::p_load(
   pROC
 )
 
-# Functions ----
-## Calculate the proportion of the posterior in the same direction as the mean
-proportion_same_direction <- function(samples) {
-  mean_posterior <- mean(samples)
-  direction <- sign(mean_posterior)
-  mean(sign(samples) == direction)
-}
-
 # Import data / model outputs ----
 surveys <- read.csv(here("data", "raw", "surveys.csv"))
 coeff_names <- read.csv(here("data", "processed", "coeff_names.csv"), header = TRUE)
