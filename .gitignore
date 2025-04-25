@@ -7,5 +7,5 @@
 *.html
 
 output/*.rds
-data/raw/survey.csv
-data/processed/survey_covs_det.csv
+data/raw/surveys.csv
+data/processed/surveys_covs_det.csv
