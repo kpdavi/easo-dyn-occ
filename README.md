@@ -1,6 +1,10 @@
 # Code for Eastern screech-owl dynamic occupancy analysis in Fort Collins, CO
 
-This repository includes scripts for analyzing and plotting in R presence / absence survey data from 2013–2021 from Fort Collins, Colorado for Eastern screech-owl (*Megascops asio maxwelliae*) and vegetation and climate variables associated with survey locations. We fit a dynamic occupancy model in the Bayesian framework to explore environmental factors associated with the species' breeding season occupancy dynamics in an understudied portion of its range and to inform local land management efforts. We found that Eastern screech-owl persistence probability decreased while colonization probability increased with aggregation of tree cover and average breeding season temperature. We also found colonization probability increased with cumulative winter precipitation, and persistence probability decreased with average winter minimum temperature. Overall, our results suggest that this population of Eastern screech-owls responds to climate before and during the breeding season in complex ways, and that this species appears to experience high turnover in this study area along the western edge of its continental range. The code in this repository reproduces the statistics and figures of the corresponding paper.
+This repository contains the data for and reproduces the statistics and figures of the corresponding scientific publication in the [Wilson Journal of Ornithology (2025)](https://doi.org/10.1080/15594491.2025.2497148). Specifically, the repository includes presence / absence survey data collected from 2013–2021 in Fort Collins, Colorado for Eastern screech-owl (*Megascops asio maxwelliae*) and vegetation and climate variables associated with survey locations, and scripts for analyzing and plotting these data in R. We fit a dynamic occupancy model in the Bayesian framework to explore environmental factors associated with the species' breeding season occupancy dynamics in an understudied portion of its range and to inform local land management efforts. We found that Eastern screech-owl persistence probability decreased while colonization probability increased with aggregation of tree cover and average breeding season temperature. We also found colonization probability increased with cumulative winter precipitation, and persistence probability decreased with average winter minimum temperature. Overall, our results suggest that this population of Eastern screech-owls responds to climate before and during the breeding season in complex ways, and that this species appears to experience high turnover in this study area along the western edge of its continental range.
+
+## Sharing/access information
+
+Research permits to conduct surveys for Eastern screech-owl were secured with the City of Fort Collins Natural Areas Department. The Eastern screech-owl monitoring program is ongoing and **potential users of the data are encouraged to contact [Rob Sparks](mailto:Rob.Sparks@birdconservancy.org?subject=inquiry%20about%20Eastern%20Screech-Owl%20project) for additional information or potential for collaboration.**
 
 ## Workflow notes
 
@@ -8,11 +12,10 @@ This repository includes scripts for analyzing and plotting in R presence / abse
 
 **Open the easo-dyn-occ.Rproj file first to ensure that all folders within the project are properly loaded into the working directory.**
 
-
 ## Description of the data and folder structure
 
 ### Data
-All data used in the analysis are contained in the folders described below. Please see the publication for more details about sources of raw data and how variables were calculated.
+All data used in the analysis are contained in the folders described below. Please see [the publication](https://doi.org/10.1080/15594491.2025.2497148) for more details about sources of raw data and how variables were calculated.
 
 * **data** &#x1F4C1;. This folder contains the raw (**raw** &#x1F4C1;) and processed (**processed** &#x1F4C1;) data for the Eastern screech-owl surveys and environmental covariates.
   + **raw** &#x1F4C1;
@@ -44,7 +47,7 @@ Within the subfolders of **scripts** &#x1F4C1;, scripts with the same numeric pr
   + `2_model_prep.R` &#x1F4C4;. Code to format the climate and vegetation covariates and generate variables needed for model fitting. The output of the script is `model_data.RData` in **data/processed** &#x1F4C1;.
 * **model_fitting** &#x1F4C1;
   + `3_model_fit_dynocc.R` &#x1F4C4;. Code to fit the dynamic occupancy model in the Bayesian framework. Outputs of the script are in **output** &#x1F4C1; and include parameter estimates for coefficients / scalars (`mod_out_coeffs.rds`), occupancy process parameters (`mod_out_occ.rds`), or parameters for calculating area under the receiver operating characteristic curve (AUC; `mod_out_auc.rds`).
-  + `4_summarize_model_output_diagnostics.R` &#x1F4C4;. Code to summarize results — posterior means, 95% credible intervals, and probability of direction [*pd*] — for focal coefficient parameters, and model diagnostics — Bayesian *p* value for the log likelihood and area under the receiver operating characteristic curve [AUC] — from the dynamic occupancy model.
+  + `4_summarize_model_diagnostics.R` &#x1F4C4;. Code to summarize results — posterior means, 95% credible intervals, and probability of direction [*pd*] — for focal coefficient parameters, and model diagnostics — Bayesian *p* value for the log likelihood and area under the receiver operating characteristic curve [AUC] — from the dynamic occupancy model.
   + `model_code_dynocc.txt` &#x1F4C4;. Text file of the dynamic occupancy model in JAGS. This file is called within the function to fit the model in the `3_model_fit_dynocc.R` script.
 * **plots** &#x1F4C1;
   + `4_fig*.R` &#x1F4C4;. Code to create figures 2--4 in the publication. Outputs of these scripts are in **plots** &#x1F4C1; and include `fig*.png` (described in more detail below).
@@ -61,9 +64,6 @@ Figures that were created from data in the manuscript are contained in the follo
 
 * **plots** &#x1F4C1;. Plots for Figures 2--4 in the manuscript, which visualize parameter estimates for model coefficients (`fig2_coeff_param_ests.png`), model-predicted probability of persistence, colonization, and initial occupancy as a function of covariates (`fig3_coeff_param_preds.png`), and model-predicted probability of persistence, colonization, occupancy, and detection by year (`fig4_occ_proc_prob.png`).
 
-## Sharing/Access information
-
-Research permits to conduct surveys for Eastern screech-owl were secured with the City of Fort Collins Natural Areas Department. The Eastern screech-owl monitoring program is ongoing and **potential users of the data are encouraged to contact [Rob Sparks](mailto:Rob.Sparks@birdconservancy.org?subject=inquiry%20about%20Eastern%20Screech-Owl%20project) for additional information or potential for collaboration.**
 
 ## Code/Software
 
