@@ -1,21 +1,21 @@
 model {
-  
+
   # Priors
-  ## Detection (p) 
+  ## Detection (p)
   for (d in 1:n_det_covs) {
     A_det[d] ~ dlogis(0,1)
   }
-  
+
   ## Initial occupancy (psi1)
   for (p in 1:n_init_occ_covs) {
     P_occ[p] ~ dlogis(0,1)
   }
-  
+
   ## Colonization (gamma)
   for (g in 1:n_col_covs) {
     G_occ[g] ~ dlogis(0,1)
   }
-  
+
   ## Persistence (phi)
   for (h in 1:n_pers_covs) {
     H_occ[h] ~ dlogis(0,1)
@@ -25,65 +25,65 @@ model {
   mu.lidar ~ dnorm(0, 0.01)
   tau.lidar <- 1/sd.lidar
   sd.lidar ~ dgamma(0.1, 0.1)
-  
-  
+
+
   # Likelihood
   # Ecological submodel: Define state conditional on parameters
   for (i in 1:nsites){ # loop over sites
-    
+
     # Initial conditions of system
     logit(psi1[i]) <- inprod(P_occ, X_psi1[i,1,])
     z[i,1] ~ dbern(psi1[i]) # Presence/absence at start of study
-    
+
     # State transitions
     for (t in 2:nyears){ # loop over years
       # Colonization
       logit(gamma[i,t-1]) <- inprod(G_occ, X_gam[i,t-1,])
-      
+
       # Persistence
       logit(phi[i,t-1]) <- inprod(H_occ, X_phi[i,t-1,])
-      
-      
+
+      # Occupancy
       z[i,t] ~ dbern(z[i,t-1] * phi[i,t-1] + (1-z[i,t-1]) * gamma[i,t-1])
     }
   }
-  
+
   # The data model via nested indexing
   for(j in 1:nsurveys){
-    # n.visits is the number of unique visits across the entire study 
+    # n.visits is the number of unique visits across the entire study
     logit(p[j]) <- inprod(A_det, X_det[j,])
     # multiply p by z
     mu.p[j] <- p[j]*z[site[j],year[j]]
     y[j] ~ dbern(mu.p[j])
-    
-    
+
+
     # Generate simulated ys for model diagnostics
     y.sim[j] ~ dbern(pocc.sim[j])  # Create new data set under model
     pocc.sim[j] <- p[j]*z[site[j],year[j]]  # Expected datum
-    
-    
+
+
     ## Calculate log likelihood
     log.lik.actual[j] <- logdensity.bern(y[j], p[j]*z[site[j],year[j]])
     log.lik.sim[j] <- logdensity.bern(y.sim[j], p[j]*z[site[j],year[j]])
   }
-  
+
   ## Covariate mean as model for missing lidar data
   for(i in 1:nsites){
     # latent state model t = 1. Assuming that n.site = ALL the sites across the WHOLE study.
     X_psi1[i,1,position.lidar] ~ dnorm(mu.lidar, tau.lidar)
   }
-  
+
   # Derived parameters
   for(i in 1:nsites){
-    psi[i,1] <- psi1[i]              
+    psi[i,1] <- psi1[i]
     for (t in 2:nyears){
       psi[i,t] <- psi[i,t-1] * phi[i,t-1] + (1-psi[i,t-1]) * gamma[i,t-1]
     }
   }
-  
+
   ## Loglikelihood fit statistic
   log.fit.actual <- sum(log.lik.actual[]) # Fit statistic for actual data set
   log.fit.sim <- sum(log.lik.sim[]) # Fit statistic for a fitting model
-  log.bpv <- step(log.fit.actual - log.fit.sim) # Bayesian p-value 
-  
+  log.bpv <- step(log.fit.actual - log.fit.sim) # Bayesian p-value
+
 } # end of model
