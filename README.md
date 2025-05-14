@@ -38,7 +38,7 @@ Within the subfolders of **scripts** &#x1F4C1;, scripts with the same numeric pr
 ### Plots
 Figures from the manuscript are contained in the following folder:
 
-* **plots** &#x1F4C1;. Plots for Figures 2—4 in the manuscript, which visualize parameter estimates for model coefficients (`fig2_coeff_param_ests.png`), model-predicted probability of persistence, colonization, and initial occupancy as a function of covariates (`fig3_coeff_param_preds.png`), and model-predicted probability of persistence, colonization, occupancy, and detection by year (`fig4_occ_proc_prob.png`).
+* **plots** &#x1F4C1;. Plots for Figures 2—4 in the manuscript, which visualize parameter estimates for model coefficients (`fig2_coeff_param_ests.png`), model-predicted probability of persistence, colonization, and initial occupancy as a function of covariates (`fig3_coeff_param_preds.png`), and model-estimated probability of persistence, colonization, occupancy, and detection by year (`fig4_occ_proc_prob.png`).
 
 
 ## Code/Software
