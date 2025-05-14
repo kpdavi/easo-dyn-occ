@@ -1,6 +1,6 @@
 # Scripts and figures for Eastern screech-owl dynamic occupancy analysis in Fort Collins, CO
 
-This repository contains the scripts to reproduce analyses and figures for the corresponding scientific publication in the [Wilson Journal of Ornithology (2025)](https://doi.org/10.1080/15594491.2025.2497148). The complete repository for this publication, including the raw / processed data and scripts to compile the data, fit the model, and summarize / plot model outputs, is on Zenodo (DOI: ).
+This repository contains the scripts to reproduce analyses and figures for the corresponding scientific publication in the [Wilson Journal of Ornithology (2025)](https://doi.org/10.1080/15594491.2025.2497148). The complete repository for this publication, including the raw / processed data and scripts to compile the data, fit the model, and summarize / plot model outputs, is on Zenodo (DOI: [10.5281/zenodo.15272794]( https://doi.org/10.5281/zenodo.15272794)).
 
 We fit a dynamic occupancy model in the Bayesian framework to 9 years of occupancy data (2013–2021) from a participatory science monitoring program in Fort Collins, Colorado, USA to explore environmental factors associated with Eastern screech-owl (*Megascops asio maxwelliae*) breeding season occupancy dynamics in an understudied portion of its range. We found that Eastern screech-owl persistence probability decreased while colonization probability increased with aggregation of tree cover and average breeding season temperature. We also found colonization probability increased with cumulative winter precipitation, and persistence probability decreased with average winter minimum temperature. Overall, our results suggest that this population of Eastern screech-owls responds to climate before and during the breeding season in complex ways, and that the species appears to experience high turnover in this study area along the western edge of its continental range.
 
@@ -18,7 +18,7 @@ Relatedly, and in addition, **this project uses the [`renv` package](https://doc
 
 ## Description of the folder structure for scripts / plots
 
-Descriptions of the raw and processed data and additional details about script outputs (e.g., model results) are in the associated Zenodo repository.
+Descriptions of the raw and processed data and additional details about script outputs (e.g., model results) are in the associated Zenodo repository (DOI: [10.5281/zenodo.15272794]( https://doi.org/10.5281/zenodo.15272794)).
 
 ### Scripts
 Within the subfolders of **scripts** &#x1F4C1;, scripts with the same numeric prefix can be run in any order.
